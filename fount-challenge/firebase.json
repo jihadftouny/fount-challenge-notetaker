@@ -1,0 +1,9 @@
+{
+  "hosting": [
+    {
+      "target": "fount-challenge",
+      "source": ".",
+      "frameworksBackend": {}
+    }
+  ]
+}

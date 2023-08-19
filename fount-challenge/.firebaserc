@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "fount-notetakerapp": {
+      "hosting": {
+        "fount-challenge": [
+          "fount-notetakerapp"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "fount-notetakerapp"
+  }
+}

@@ -22,21 +22,19 @@
           Login
         </button>
       </form>
-      <div style="padding-left: 0.4rem; padding-top: 1rem">
-        <p><a routerLink="/register">Don't have an account?</a></p>
-        <p><a routerLink="/recover">Forgot your Password?</a></p>
+      <div class="links-container">
+        <p class="link"><a routerLink="/register">Don't have an account?</a></p>
+        <p class="link"><a routerLink="/recover">Forgot your Password?</a></p>
       </div>
       <div class="google-signin">
-        <a
-          (click)="signInWithGoogle()"
-          style="text-decoration: none; cursor: pointer"
-        >
+        <a (click)="signInWithGoogle()" class="google-link">
           <img
             src="../../../assets/images/google/icon-google.png"
             alt=""
             height="24px"
             width="24px"
-          />Sign in with Google
+          />
+          <span class="google-text">Sign in with Google</span>
         </a>
       </div>
     </mat-card-content>

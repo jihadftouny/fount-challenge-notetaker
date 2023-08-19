@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar'; // Import MatSnackBar
 import { AuthService } from '../../../shared/auth.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import firebase from 'firebase/compat/app';
@@ -15,16 +15,17 @@ export class LoginComponent {
 
   constructor(
     private authService: AuthService,
-    public afAuth: AngularFireAuth
+    public afAuth: AngularFireAuth,
+    private snackBar: MatSnackBar
   ) {}
 
   login() {
-    if (this.email == '') {
-      alert('Please enter an email');
+    if (this.email === '') {
+      this.openSnackBar('Please enter an email');
       return;
     }
-    if (this.password == '') {
-      alert('Please enter a password');
+    if (this.password === '') {
+      this.openSnackBar('Please enter a password');
       return;
     }
     this.authService.login(this.email, this.password);
@@ -35,5 +36,11 @@ export class LoginComponent {
 
   signInWithGoogle() {
     this.authService.googleSignIn();
+  }
+
+  private openSnackBar(message: string) {
+    this.snackBar.open(message, 'Dismiss', {
+      duration: 3000,
+    });
   }
 }

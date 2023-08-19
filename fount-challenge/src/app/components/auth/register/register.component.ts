@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+MatSnackBar;
 import { AuthService } from '../../../shared/auth.service';
 
 @Component({
@@ -10,20 +12,29 @@ export class RegisterComponent {
   email: string = '';
   password: string = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private snackBar: MatSnackBar
+  ) {}
 
   register() {
-    if (this.email == '') {
-      alert('Please enter an email');
+    if (this.email === '') {
+      this.openSnackBar('Please enter an email');
       return;
     }
-    if (this.password == '') {
-      alert('Please enter a password');
+    if (this.password === '') {
+      this.openSnackBar('Please enter a password');
       return;
     }
     this.authService.register(this.email, this.password);
 
     this.email = '';
     this.password = '';
+  }
+
+  private openSnackBar(message: string) {
+    this.snackBar.open(message, 'Dismiss', {
+      duration: 3000,
+    });
   }
 }

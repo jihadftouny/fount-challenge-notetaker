@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../../shared/auth.service';
 import { Note } from 'src/app/models/note';
 import { DataService } from 'src/app/shared/data.service';
@@ -27,7 +28,8 @@ export class DashboardComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private dataService: DataService,
-    public afAuth: AngularFireAuth
+    public afAuth: AngularFireAuth,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -54,14 +56,14 @@ export class DashboardComponent implements OnInit {
           .filter((note: Note) => note.userId === userId);
       },
       (err) => {
-        alert('Error while fetching notes');
+        this.openSnackBar('Error while fetching notes');
       }
     );
   }
 
   async addNote() {
     if (this.title == '' || this.content == '') {
-      alert('Please fill all fields to create a note.');
+      this.openSnackBar('Please fill all fields to create a note.');
       return;
     }
     this.noteObj.id = '';
@@ -84,26 +86,12 @@ export class DashboardComponent implements OnInit {
   }
 
   logout() {
-    this.afAuth.signOut();
+    this.authService.logout();
+  }
+
+  private openSnackBar(message: string) {
+    this.snackBar.open(message, 'Dismiss', {
+      duration: 3000,
+    });
   }
 }
-
-// export class DashboardComponent implements OnInit {
-//   newNote: { title: string; content: string } = { title: '', content: '' };
-//   notes: { title: string; content: string }[] = [];
-
-//   constructor(private authService: AuthService) {}
-
-//   ngOnInit(): void {
-//     // Fetch notes or initialize them if needed
-//   }
-
-//   createNote(): void {
-//     this.notes.push({ ...this.newNote });
-//     this.newNote = { title: '', content: '' };
-//   }
-
-//   logout() {
-//     this.authService.logout();
-//   }
-// }

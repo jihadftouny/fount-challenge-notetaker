@@ -12,7 +12,7 @@ export class MainPageComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    // Fetch notes or initialize them if needed
+    // deprecated component
   }
 
   createNote(): void {

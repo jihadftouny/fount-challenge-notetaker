@@ -2,20 +2,24 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { GoogleAuthProvider } from '@angular/fire/auth';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import firebase from 'firebase/compat/app';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private fireauth: AngularFireAuth, private router: Router) {}
+  constructor(
+    private fireauth: AngularFireAuth,
+    private router: Router,
+    private snackBar: MatSnackBar
+  ) {}
 
   async getCurrentUserId(): Promise<string> {
     const user = await this.fireauth.currentUser;
     return user ? user.uid : '';
   }
 
-  // Login method
   login(email: string, password: string) {
     this.fireauth.signInWithEmailAndPassword(email, password).then(
       (res) => {
@@ -26,7 +30,7 @@ export class AuthService {
         }
       },
       (err) => {
-        alert('Error on Login');
+        this.openSnackBar('Error on Login');
         this.router.navigate(['/login']);
       }
     );
@@ -35,13 +39,13 @@ export class AuthService {
   register(email: string, password: string) {
     this.fireauth.createUserWithEmailAndPassword(email, password).then(
       (res) => {
-        alert('Registration Successfull!');
+        this.openSnackBar('Registration Successfull!');
         console.log(res.user);
         this.sendEmailForVerification(res.user);
         this.router.navigate(['/login']);
       },
       (err) => {
-        alert(err.message);
+        this.openSnackBar(err.message);
         this.router.navigate(['/register']);
       }
     );
@@ -53,7 +57,7 @@ export class AuthService {
         this.router.navigate(['']);
       },
       (err) => {
-        alert(err.message);
+        this.openSnackBar(err.message);
       }
     );
   }
@@ -64,7 +68,7 @@ export class AuthService {
         this.router.navigate(['/verify']);
       },
       (err) => {
-        alert('Something went wrong');
+        this.openSnackBar('Something went wrong');
       }
     );
   }
@@ -76,7 +80,9 @@ export class AuthService {
         this.router.navigate(['/verify']);
       },
       (err: any) => {
-        alert('Something went wrong. Not able to send mail to your email.');
+        this.openSnackBar(
+          'Something went wrong. Not able to send mail to your email.'
+        );
       }
     );
   }
@@ -89,12 +95,14 @@ export class AuthService {
           this.router.navigate(['/dashboard']);
         },
         (err) => {
-          alert(err.message);
+          this.openSnackBar(err.message);
         }
       );
   }
 
-  // getAuthServiceInstance() {
-  //   return this;
-  // }
+  private openSnackBar(message: string) {
+    this.snackBar.open(message, 'Dismiss', {
+      duration: 3000,
+    });
+  }
 }

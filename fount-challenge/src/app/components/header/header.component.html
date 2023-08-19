@@ -1,1 +1,7 @@
-<p>header works!</p>
+<mat-toolbar>
+  <span>Fount Note Taker</span>
+  <span class="spacer"></span>
+  <button mat-icon-button *ngIf="isDashboardRoute" (click)="logout()">
+    <mat-icon>logout</mat-icon>
+  </button>
+</mat-toolbar>

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar'; // Import MatSnackBar
 import { AuthService } from '../../../shared/auth.service';
 
 @Component({
@@ -9,11 +10,16 @@ import { AuthService } from '../../../shared/auth.service';
 export class ForgotPasswordComponent {
   email: string = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private snackBar: MatSnackBar
+  ) {}
 
   forgotPassword() {
-    if (this.email == '') {
-      alert('Please enter an email');
+    if (this.email === '') {
+      this.snackBar.open('Please enter an email', 'Dismiss', {
+        duration: 3000,
+      });
       return;
     }
     this.authService.forgotPassword(this.email);

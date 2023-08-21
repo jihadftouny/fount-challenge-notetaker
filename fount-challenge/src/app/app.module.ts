@@ -21,6 +21,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
@@ -30,6 +31,7 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 
 import { VerifyEmailComponent } from './components/auth/verify-email/verify-email.component';
 import { AuthGuard } from './components/auth/auth.guard';
+import { DeleteConfirmationDialogComponent } from './components/dashboard/delete-confirmation-dialog/delete-confirmation-dialog.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +43,7 @@ import { AuthGuard } from './components/auth/auth.guard';
     DashboardComponent,
     ForgotPasswordComponent,
     VerifyEmailComponent,
+    DeleteConfirmationDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -55,6 +58,7 @@ import { AuthGuard } from './components/auth/auth.guard';
     MatSnackBarModule,
     MatIconModule,
     MatToolbarModule,
+    MatDialogModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),

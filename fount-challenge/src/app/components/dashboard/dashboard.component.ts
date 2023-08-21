@@ -4,6 +4,9 @@ import { AuthService } from '../../shared/auth.service';
 import { Note } from 'src/app/models/note';
 import { DataService } from 'src/app/shared/data.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { DeleteConfirmationDialogComponent } from './delete-confirmation-dialog/delete-confirmation-dialog.component';
+
 import firebase from 'firebase/compat/app';
 
 @Component({
@@ -29,7 +32,8 @@ export class DashboardComponent implements OnInit {
     private authService: AuthService,
     private dataService: DataService,
     public afAuth: AngularFireAuth,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -78,11 +82,28 @@ export class DashboardComponent implements OnInit {
   updateNote() {}
 
   deleteNote(note: Note) {
-    if (
-      window.confirm("Are you sure you want to delete '" + note.title + "'?")
-    ) {
-      this.dataService.deleteNote(note);
-    }
+    const dialogRef: MatDialogRef<any> = this.dialog.open(
+      DeleteConfirmationDialogComponent,
+      {
+        width: '300px',
+        data: { title: note.title },
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === true) {
+        this.dataService
+          .deleteNote(note)
+          .then(() => {
+            // After successful deletion, update the notesList to remove the deleted note
+            this.notesList = this.notesList.filter((n) => n.id !== note.id);
+            this.openSnackBar('Note deleted successfully.');
+          })
+          .catch((error) => {
+            this.openSnackBar('Error deleting note: ' + error.message);
+          });
+      }
+    });
   }
 
   logout() {

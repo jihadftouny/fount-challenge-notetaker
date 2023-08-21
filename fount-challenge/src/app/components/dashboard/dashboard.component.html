@@ -43,6 +43,9 @@
         <mat-card-content>
           <h3>{{ note.title }}</h3>
           <p>{{ note.content }}</p>
+          <button mat-icon-button color="warn" (click)="deleteNote(note)">
+            <mat-icon>delete</mat-icon>
+          </button>
         </mat-card-content>
       </mat-card>
     </ng-container>
